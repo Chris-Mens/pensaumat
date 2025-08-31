@@ -1,5 +1,9 @@
 # PENSA UMaT Website
 
+![PENSA UMaT Website Interface](https://i.ibb.co/2cJXQYt/pensa-interface.png)
+
+*A glimpse of the PENSA UMaT website interface*
+
 Official website for the Pentecost Students and Associates (PENSA) at the University of Mines and Technology (UMaT), Tarkwa, Ghana.
 
 ## 🌟 Features
