@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - PENSA UMaT</title>
+    <link rel="icon" type="image/x-icon" href="images/pensa.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a5f9c;
+            --secondary-color: #4CAF50;
+            --accent-color: #2196F3;
+            --white: #ffffff;
+            --shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-section h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+        }
+
+        .about-card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .about-card h2 i {
+            margin-right: 1rem;
+            color: var(--accent-color);
+        }
+
+        .about-card p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 3rem 1rem;
+            }
+            
+            .about-section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be loaded by JavaScript -->
+    <div id="nav-placeholder"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/IMG_1887.jpg') center/cover no-repeat; min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white;">
+            <div class="hero-content" style="max-width: 800px; padding: 2rem;">
+                <h1 class="animate-on-scroll" data-animation="fade-in" style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">About PENSA UMaT</h1>
+                <p class="animate-on-scroll" data-animation="fade-in" style="font-size: 1.5rem; margin-bottom: 2rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">Transforming Lives Through Christ on Campus</p>
+                <p class="hero-subtitle">Who we are, what we believe, and why we exist</p>
+            </div>
+        </section>
+
+        <!-- Who We Are -->
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Who We Are</h2>
+                </div>
+                <div class="about-card">
+                    <p>PENSA (PENtecost Students and Associates) UMaT is a vibrant Christian student body under the Church of Pentecost, operating within the University of Mines and Technology (UMaT) community. As part of the larger PENSA Ghana network, we are committed to nurturing students spiritually, academically, and socially.</p>
+                    <p>We are more than just a fellowship - we are a family that supports, encourages, and grows together in Christ. Our doors are open to students from all backgrounds who seek to know God and make Him known on campus and beyond.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision & Mission -->
+        <section class="section-padding" style="background-color: #f8f9fa;">
+            <div class="container">
+                <div class="vision-mission-grid">
+                    <div class="vision-mission-card">
+                        <div class="icon-box">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <p>To be a dynamic and vibrant Christian fellowship that transforms lives through the power of the Gospel, nurturing students into responsible Christian leaders who will impact their communities and the world for Christ.</p>
+                    </div>
+                    <div class="vision-mission-card">
+                        <div class="icon-box">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <ul>
+                            <li>To win students for Christ through evangelism and discipleship</li>
+                            <li>To nurture spiritual growth through sound biblical teaching</li>
+                            <li>To develop Christian leaders for the church and society</li>
+                            <li>To foster a loving and supportive Christian community</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Values -->
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Core Values</h2>
+                    <p>The foundation of our fellowship</p>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-pray"></i>
+                        </div>
+                        <h3>Prayer</h3>
+                        <p>We are committed to a lifestyle of prayer and dependence on God.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-cross"></i>
+                        </div>
+                        <h3>Evangelism</h3>
+                        <p>We are passionate about sharing the Gospel with everyone.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-bible"></i>
+                        </div>
+                        <h3>Discipleship</h3>
+                        <p>We grow together in Christ through teaching and mentorship.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Fellowship</h3>
+                        <p>We build authentic Christian community and relationships.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3>Service</h3>
+                        <p>We serve God by serving others with our gifts and talents.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Excellence</h3>
+                        <p>We strive for excellence in all we do for God's glory.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History & Legacy -->
+        <section class="section-padding" style="background-color: #f8f9fa;">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our History & Legacy</h2>
+                    <p>Celebrating our journey of faith and impact</p>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">1980</div>
+                        <div class="timeline-content">
+                            <h3>Establishment</h3>
+                            <p>PENSA UMaT was officially established as a campus ministry, starting with a small group of dedicated students.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2010</div>
+                        <div class="timeline-content">
+                            <h3>Growth & Expansion</h3>
+                            <p>The fellowship experienced significant growth, leading to the establishment of various ministries and departments.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2015</div>
+                        <div class="timeline-content">
+                            <h3>New Meeting Venue</h3>
+                            <p>Acquired a dedicated meeting space on campus, allowing for more comprehensive ministry activities.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-content">
+                            <h3>Digital Ministry</h3>
+                            <p>Successfully transitioned to online ministry during the global pandemic, reaching more students than ever before.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">Present</div>
+                        <div class="timeline-content">
+                            <h3>Continuing the Legacy</h3>
+                            <p>Today, PENSA UMaT continues to be a beacon of light on campus, with hundreds of students actively involved in various ministries and outreach programs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Do -->
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>What We Do</h2>
+                    <p>Our active ministries and activities</p>
+                </div>
+                <div class="ministries-highlight">
+                    <div class="ministry-highlight-card">
+                        <i class="fas fa-music"></i>
+                        <h3>Worship & Music</h3>
+                        <p>Leading the congregation in heartfelt worship through music and the arts.</p>
+                    </div>
+                    <div class="ministry-highlight-card">
+                        <i class="fas fa-bible"></i>
+                        <h3>Bible Study</h3>
+                        <p>In-depth study of God's Word for spiritual growth and understanding.</p>
+                    </div>
+                    <div class="ministry-highlight-card">
+                        <i class="fas fa-pray"></i>
+                        <h3>Prayer Ministry</h3>
+                        <p>Interceding for the campus, nation, and global missions.</p>
+                    </div>
+                    <div class="ministry-highlight-card">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>Evangelism</h3>
+                        <p>Sharing the Gospel on campus and in the surrounding communities.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-5">
+                    <a href="ministries.html" class="btn btn-primary">Explore All Ministries</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fellowship Times & Venue -->
+        <section class="section-padding" style="background-color: #f8f9fa;">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Join Us</h2>
+                    <p>Our weekly programs and meeting venue</p>
+                </div>
+                <div class="meeting-info">
+                    <div class="meeting-schedule">
+                        <h3>Weekly Schedule</h3>
+                        <ul class="schedule-list">
+                            <li>
+                                <span class="day">Sunday</span>
+                                <span class="time">9:00 AM - 12:00 PM</span>
+                                <span class="event">Sunday Service</span>
+                            </li>
+                            <li>
+                                <span class="day">Tuesday</span>
+                                <span class="time">6:00 PM - 7:30 PM</span>
+                                <span class="event">Bible Study</span>
+                            </li>
+                            <li>
+                                <span class="day">Thursday</span>
+                                <span class="time">6:00 PM - 7:30 PM</span>
+                                <span class="event">Prayer Meeting</span>
+                            </li>
+                            <li>
+                                <span class="day">Friday</span>
+                                <span class="time">4:00 PM - 6:00 PM</span>
+                                <span class="event">Choir Practice</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="venue-map">
+                        <h3>Our Venue</h3>
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3969.309750481206!2d-1.944232925200597!3d5.300692934740955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMTgnMDIuNSJOIDHCsDU2JzM2LjUiVw!5e0!3m2!1sen!2sgh!4v1620000000000!5m2!1sen!2sgh" 
+                                    width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                        <p class="venue-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            PENSA Worship Center, UMaT Campus<br>
+                            University of Mines and Technology<br>
+                            Tarkwa, Ghana
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="section-padding" style="background: var(--primary-color); color: white; text-align: center;">
+            <div class="container">
+                <h2>Join Our Community</h2>
+                <p style="max-width: 700px; margin: 0 auto 2rem;">Become part of our vibrant Christian community on campus. Whether you're a new student or have been around, there's a place for you in PENSA UMaT.</p>
+                <div class="cta-buttons" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" class="btn" style="background: #25D366; color: white; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+                    </a>
+                    <a href="contact.html" class="btn btn-outline" style="border-color: white; color: white;">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded by JavaScript -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        // Initialize animations when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initAnimations === 'function') {
+                initAnimations();
+            }
+            
+            // Add scroll event listener for animations
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                const windowHeight = window.innerHeight;
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementPosition < windowHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Run once on page load
+            animateOnScroll();
+            
+            // Run on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership - PENSA UMaT</title>
+    <link rel="icon" type="image/x-icon" href="images/pensa.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a5f9c;
+            --secondary-color: #4CAF50;
+            --accent-color: #2196F3;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .leadership-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/IMG_9411.jpg') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            margin-bottom: 3rem;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .leadership-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .leadership-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Introduction Section */
+        .intro-section {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Leadership Sections */
+        .leadership-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 1.5rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+
+        .section-header p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Leadership Grid */
+        .leadership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .leader-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            padding: 1.5rem;
+            height: 100%;
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .leader-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-top-color: var(--primary-color);
+        }
+
+        .leader-img {
+            width: 100%;
+            height: 250px;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leader-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .leader-card:hover .leader-img img {
+            transform: scale(1.05);
+        }
+
+        .leader-info {
+            padding: 1.5rem 1rem;
+            position: relative;
+        }
+
+        .leader-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .leader-role {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .leader-verse {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed #eee;
+            display: none;
+        }
+
+        .leader-card:hover .leader-verse {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Hierarchy Styles */
+        .hierarchy-level {
+            margin-bottom: 2.5rem;
+        }
+
+        .hierarchy-level h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .leadership-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .leadership-hero p {
+                font-size: 1.1rem;
+            }
+
+            .leadership-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .leadership-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .team-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+            font-size: 1.3rem;
+        }
+
+        .team-info p {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .position-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .team-section {
+                padding: 3rem 1rem;
+            }
+            
+            .section-header h1 {
+                font-size: 2rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be loaded by JavaScript -->
+    <div id="nav-placeholder"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="leadership-hero">
+            <h1 class="animate-on-scroll" data-animation="fade-in">Our Leadership</h1>
+            <p class="animate-on-scroll" data-animation="fade-in" data-delay="0.2s">Meet the dedicated team leading PENSA UMaT for the 2024/2025 Academic Year</p>
+        </section>
+
+        <!-- Introduction Section -->
+        <section class="intro-section">
+            <p>The leadership of PENSA UMaT consists of dedicated student executives and coordinators who serve in diverse capacities to ensure spiritual growth, organization, and effective ministry on campus.</p>
+            <a href="#" class="download-btn">
+                <i class="fas fa-download"></i> Download Leadership Structure
+            </a>
+        </section>
+        <!-- Executive Level -->
+        <section class="leadership-section">
+            <div class="section-header">
+                <h2>Executive Leadership</h2>
+                <p>Leading with vision and dedication</p>
+            </div>
+            <div class="leadership-grid">
+                <!-- President -->
+                <div class="leader-card animate-on-scroll" data-animation="fade-in">
+                    <div class="leader-img">
+                        <img src="images/leaders/president.jpg" alt="President">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">John Osei</h3>
+                        <span class="leader-role">President</span>
+                        <p class="leader-verse">"I can do all things through Christ who strengthens me." - Philippians 4:13</p>
+                    </div>
+                </div>
+
+                <!-- Vice President -->
+                <div class="leader-card animate-on-scroll" data-animation="fade-in" data-delay="0.1s">
+                    <div class="leader-img">
+                        <img src="images/leaders/vp.jpg" alt="Vice President">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Ama Serwaa</h3>
+                        <span class="leader-role">Vice President</span>
+                        <p class="leader-verse">"Commit your work to the Lord, and your plans will be established." - Proverbs 16:3</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secretariat -->
+        <section class="leadership-section">
+            <div class="section-header">
+                <h2>Secretariat</h2>
+                <p>Handling administration and coordination</p>
+            </div>
+            <div class="leadership-grid">
+                <!-- General Secretary -->
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/secretary.jpg" alt="General Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Kwame Mensah</h3>
+                        <span class="leader-role">General Secretary</span>
+                        <p class="leader-verse">"Do your best to present yourself to God as one approved, a worker who has no need to be ashamed." - 2 Timothy 2:15</p>
+                    </div>
+                </div>
+
+                <!-- Assistant Secretary -->
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/asst-secretary.jpg" alt="Assistant Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Akosua Adoma</h3>
+                        <span class="leader-role">Assistant Secretary</span>
+                        <p class="leader-verse">"Whatever you do, work heartily, as for the Lord and not for men." - Colossians 3:23</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <!-- Prayer Wing -->
+        <section class="leadership-section">
+            <div class="section-header">
+                <h2>Prayer Wing</h2>
+                <p>Leading our spiritual covering and intercession</p>
+            </div>
+            <div class="leadership-grid">
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/prayer-sec.jpg" alt="Prayer Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Emmanuel Ofori</h3>
+                        <span class="leader-role">Prayer Secretary</span>
+                        <p class="leader-verse">"Pray without ceasing." - 1 Thessalonians 5:17</p>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/asst-prayer.jpg" alt="Assistant Prayer Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Grace Mensah</h3>
+                        <span class="leader-role">Assistant Prayer Secretary</span>
+                        <p class="leader-verse">"The prayer of a righteous person has great power." - James 5:16</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Organizing Team -->
+        <section class="leadership-section">
+            <div class="section-header">
+                <h2>Organizing & Coordination</h2>
+                <p>Ensuring smooth operations and events</p>
+            </div>
+            <div class="leadership-grid">
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/org-sec.jpg" alt="Organizing Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Kofi Boateng</h3>
+                        <span class="leader-role">Organizing Secretary</span>
+                        <p class="leader-verse">"Let all things be done decently and in order." - 1 Corinthians 14:40</p>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/asst-org.jpg" alt="Assistant Organizing Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Abena Konadu</h3>
+                        <span class="leader-role">Assistant Organizing Secretary</span>
+                        <p class="leader-verse">"For God is not a God of confusion but of peace." - 1 Corinthians 14:33</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Finance & Administration -->
+        <section class="leadership-section">
+            <div class="section-header">
+                <h2>Finance & Administration</h2>
+                <p>Managing resources and welfare</p>
+            </div>
+            <div class="leadership-grid">
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/treasurer.jpg" alt="Financial Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">David Ampofo</h3>
+                        <span class="leader-role">Financial Secretary / Treasurer</span>
+                        <p class="leader-verse">"Honor the Lord with your wealth." - Proverbs 3:9</p>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-img">
+                        <img src="images/leaders/welfare.jpg" alt="Welfare Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 class="leader-name">Comfort Asante</h3>
+                        <span class="leader-role">Welfare Secretary</span>
+                        <p class="leader-verse">"Bear one another's burdens." - Galatians 6:2</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded by JavaScript -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        // Initialize when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            const yearElement = document.getElementById('current-year');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+            
+            // Initialize scroll animations
+            if (typeof initScrollAnimations === 'function') {
+                initScrollAnimations();
+            }
+
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#' || targetId === '#!') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Handle download button click
+            const downloadBtn = document.querySelector('.download-btn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Leadership structure PDF will be available for download soon.');
+                    // In a real implementation, you would trigger a file download here
+                    // window.location.href = 'path/to/leadership-structure.pdf';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

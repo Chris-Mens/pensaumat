@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - PENSA UMaT</title>
+    <link rel="icon" type="image/x-icon" href="images/pensa.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Hero Section */
+        .contact-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/IMG_9411.jpg') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .contact-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Contact Layout */
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 95, 156, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            margin-bottom: 2rem;
+        }
+
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:hover .contact-icon {
+            background-color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .contact-text h4 {
+            margin: 0 0 0.3rem 0;
+            color: #333;
+        }
+
+        .contact-text p, .contact-text a {
+            margin: 0;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-text a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Social Media */
+        .social-media {
+            margin: 2rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        /* Leadership Directory */
+        .leadership-directory {
+            margin: 3rem 0;
+        }
+
+        .leadership-directory h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .leader-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .leader-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .leader-card h4 {
+            margin: 0 0 0.3rem 0;
+            color: var(--primary-color);
+        }
+
+        .leader-card p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .view-all {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .view-all:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        /* Map Section */
+        .map-section {
+            margin: 3rem 0;
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-info {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .contact-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .contact-hero p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be loaded by JavaScript -->
+    <div id="nav-placeholder"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="contact-hero">
+            <h1 class="animate-on-scroll" data-animation="fade-in">Contact Us</h1>
+            <p class="animate-on-scroll" data-animation="fade-in" data-delay="0.2s">
+                We'd love to hear from you! Whether you're a student, a visitor, or a past member, 
+                feel free to reach out to us. Our doors (and inbox) are always open.
+            </p>
+        </section>
+
+        <!-- Contact Form and Info -->
+        <div class="contact-container">
+            <!-- Contact Form -->
+            <section class="contact-form">
+                <h2>Send us a Message</h2>
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle"></i> Message sent successfully! We'll get back to you soon.
+                </div>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="text-muted">(Optional)</span></label>
+                        <input type="tel" id="phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+            </section>
+
+            <!-- Contact Information -->
+            <div class="contact-details">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email Us</h4>
+                            <a href="mailto:pensa@umat.edu.gh">pensa@umat.edu.gh</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Call Us</h4>
+                            <a href="tel:+233XXXXXXXXX">+233 XX XXX XXXX</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Visit Us</h4>
+                            <p>PENSA UMaT Chapter<br>University of Mines and Technology<br>Tarkwa, Ghana</p>
+                        </div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="social-media">
+                        <h4>Connect With Us</h4>
+                        <div class="social-links">
+                            <a href="https://wa.me/233XXXXXXXXX" class="social-link" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="https://facebook.com/pensaumat" class="social-link" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://instagram.com/pensa_umat" class="social-link" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://youtube.com/pensaumat" class="social-link" target="_blank">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leadership Directory -->
+                <div class="leadership-directory">
+                    <h3>Quick Contacts</h3>
+                    
+                    <div class="leader-card">
+                        <h4>President</h4>
+                        <p>John Doe<br>+233 XX XXX XXXX</p>
+                    </div>
+                    
+                    <div class="leader-card">
+                        <h4>General Secretary</h4>
+                        <p>Jane Smith<br>+233 XX XXX XXXX</p>
+                    </div>
+                    
+                    <div class="leader-card">
+                        <h4>Prayer Secretary</h4>
+                        <p>Michael Johnson<br>+233 XX XXX XXXX</p>
+                    </div>
+                    
+                    <div class="leader-card">
+                        <h4>Financial Secretary</h4>
+                        <p>Sarah Williams<br>+233 XX XXX XXXX</p>
+                    </div>
+                    
+                    <a href="portfolio.html" class="view-all">View All Executives →</a>
+                </div>
+
+                <!-- Map Section -->
+                <div class="map-section">
+                    <h3>Find Us</h3>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3969.309750481206!2d-1.944232925200597!3d5.300692934740955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMTgnMDIuNSJOIDHCsDU2JzM2LjUiVw!5e0!3m2!1sen!2sgh!4v1620000000000!5m2!1sen!2sgh" 
+                                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded by JavaScript -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Form submission handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real application, you would send the form data to a server here
+            // For now, we'll just show the success message
+            document.getElementById('successMessage').style.display = 'block';
+            this.reset();
+            
+            // Scroll to show success message
+            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+            
+            // Hide success message after 5 seconds
+            setTimeout(function() {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+
+        // Load navigation and footer
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNavigation();
+            loadFooter();
+            
+            // Initialize animations
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                elements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        const animation = element.getAttribute('data-animation');
+                        const delay = element.getAttribute('data-delay') || 0;
+                        
+                        element.style.animation = `${animation} 0.6s ease-out forwards`;
+                        element.style.animationDelay = `${delay}s`;
+                        element.style.opacity = '1';
+                    }
+                });
+            };
+            
+            // Run once on page load
+            animateOnScroll();
+            
+            // Run on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

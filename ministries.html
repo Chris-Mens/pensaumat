@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ministries & Departments - PENSA UMaT</title>
+    <link rel="icon" type="image/x-icon" href="images/pensa.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Hero Section */
+        .ministry-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/IMG_1925.jpg') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 8rem 1rem;
+            margin-bottom: 3rem;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ministry-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .ministry-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+
+        /* Introduction */
+        .introduction {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+
+        .introduction p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 2rem;
+        }
+
+        /* Ministries Grid */
+        .ministries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto 5rem;
+        }
+
+        .ministry-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .ministry-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .ministry-icon {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .ministry-card:hover .ministry-icon {
+            background-color: var(--accent-color);
+        }
+
+        .ministry-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ministry-content h3 {
+            color: var(--primary-color);
+            margin: 0 0 1rem 0;
+            font-size: 1.4rem;
+        }
+
+        .ministry-content p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        /* Why Join Section */
+        .why-join {
+            background-color: #f9f9f9;
+            padding: 5rem 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .why-join .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .why-join h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .benefit-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .benefit-item i {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 0 1.5rem 5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .ministry-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .ministry-hero p {
+                font-size: 1rem;
+            }
+
+            .ministries-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be loaded by JavaScript -->
+    <div id="nav-placeholder"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="ministry-hero">
+            <h1>Our Ministries & Departments</h1>
+            <p>Serving God through diverse callings, united in one fellowship.</p>
+        </section>
+
+        <!-- Introduction -->
+        <section class="introduction animate-on-scroll" data-animation="fade-in">
+            <p>PENSA UMaT ministries are the heartbeat of our fellowship. They provide avenues for students to discover their gifts, serve the Lord, and impact campus with the gospel.</p>
+        </section>
+
+        <!-- Ministries Grid -->
+        <section class="ministries-section">
+            <h2 class="section-title">Our Ministries & Departments</h2>
+            <div class="ministries-grid">
+                <!-- Prayer Ministry -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in">
+                    <div class="ministry-icon">
+                        <i class="fas fa-pray"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Prayer Ministry</h3>
+                        <p>Leading intercession, prayer retreats, and providing spiritual covering for the fellowship and campus community.</p>
+                    </div>
+                </div>
+
+                <!-- Evangelism & Outreach -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.1s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-cross"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Evangelism & Outreach</h3>
+                        <p>Leading campus evangelism, organizing missions, and reaching out to the lost with the message of Christ.</p>
+                    </div>
+                </div>
+
+                <!-- Music Ministry -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.2s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Music Ministry</h3>
+                        <p>Leading worship, training singers and instrumentalists, and creating an atmosphere of praise and worship.</p>
+                    </div>
+                </div>
+
+                <!-- Bible Study & Teaching -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.3s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-bible"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Bible Study & Teaching</h3>
+                        <p>Leading in-depth Bible studies, discipleship programs, and teaching God's Word with clarity and relevance.</p>
+                    </div>
+                </div>
+
+                <!-- Ushering -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.1s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Ushering / Protocol</h3>
+                        <p>Maintaining order during services, welcoming new members, and ensuring a smooth flow of all programs.</p>
+                    </div>
+                </div>
+
+                <!-- Creative Arts -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.2s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Drama / Creative Arts</h3>
+                        <p>Using drama, poetry, and other creative expressions to communicate the gospel and edify the church.</p>
+                    </div>
+                </div>
+
+                <!-- Media & Tech -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.3s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Media & Tech Team</h3>
+                        <p>Managing sound, livestream, photography, and social media to enhance our worship experience and outreach.</p>
+                    </div>
+                </div>
+
+                <!-- Welfare & Hospitality -->
+                <div class="ministry-card animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.4s">
+                    <div class="ministry-icon">
+                        <i class="fas fa-hands-heart"></i>
+                    </div>
+                    <div class="ministry-content">
+                        <h3>Welfare & Hospitality</h3>
+                        <p>Caring for members, new converts, and providing support through various services and outreach programs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Join Section -->
+        <section class="why-join">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in">Why Join a Ministry?</h2>
+                <p class="animate-on-scroll" data-animation="fade-in" style="text-align: center; max-width: 800px; margin: 0 auto 2rem;">
+                    Every student has a gift. Ministries are the place to discover, develop, and use it to glorify God.
+                </p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-item animate-on-scroll" data-animation="fade-in">
+                        <i class="fas fa-seedling"></i>
+                        <h3>Spiritual Growth</h3>
+                        <p>Deepen your faith as you serve and grow in your relationship with God.</p>
+                    </div>
+                    
+                    <div class="benefit-item animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.1s">
+                        <i class="fas fa-users"></i>
+                        <h3>Fellowship</h3>
+                        <p>Build meaningful relationships with like-minded believers.</p>
+                    </div>
+                    
+                    <div class="benefit-item animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.2s">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Leadership Training</h3>
+                        <p>Develop valuable leadership skills while serving in your area of gifting.</p>
+                    </div>
+                    
+                    <div class="benefit-item animate-on-scroll" data-animation="fade-in" style="animation-delay: 0.3s">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>Service Opportunities</h3>
+                        <p>Make a tangible difference in the lives of others through service.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section animate-on-scroll" data-animation="fade-in">
+            <h2>Ready to Get Involved?</h2>
+            <p>Join a ministry today and be part of what God is doing at PENSA UMaT.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Join a Ministry Today</a>
+                <a href="#contact" class="btn btn-secondary">Contact Ministry Leaders</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded by JavaScript -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>
