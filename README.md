@@ -1,6 +1,6 @@
 # PENSA UMaT Website
-
-![PENSA UMaT Website Interface](https://i.ibb.co/2cJXQYt/pensa-interface.png)
+![interface](image.png)
+![PENSA UMaT Website Interface]
 
 *A glimpse of the PENSA UMaT website interface*
 
