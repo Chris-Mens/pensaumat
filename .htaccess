@@ -1,0 +1,65 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Set the base directory
+RewriteBase /pensaug.org/
+
+# Set the default document
+DirectoryIndex index.html
+
+# Remove .html extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Handle direct requests to about-us-2 (without .html)
+RewriteRule ^about-us-2$ about-us-2.html [NC,L]
+
+# Handle direct requests to other pages (without .html)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$ [NC]
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Prevent direct access to .html files (optional, for clean URLs)
+# RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+?)\.html[\s?] [NC]
+# RewriteRule ^ %1 [R=301,L,NE]
+
+# Handle front controller (for SPA routing if needed)
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ index.html [L]
+
+# Security Headers
+<IfModule mod_headers.c>
+    # Content Security Policy
+    Header set Content-Security-Policy "default-src 'self' data: 'unsafe-inline' 'unsafe-eval' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:;"
+    
+    # Other security headers
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    
+    # CORS headers (if needed)
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Error documents
+ErrorDocument 404 /pensaug.org/404.html
+ErrorDocument 500 /pensaug.org/500.html
+
+# Enable CORS for fonts
+<FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+
+# Enable CORS for API requests
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</IfModule>
