@@ -1,11 +1,5 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false,
-  "routes": [
-    {
-      "src": "/about-us-2",
-      "dest": "/about-us-2.html"
-    }
-  ]
+  "trailingSlash": false
 }
