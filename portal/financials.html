@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Financials | PENSA UMaT Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-dark: #0a58ca;
+            --secondary-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --sidebar-width: 280px;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: var(--secondary-bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+            position: fixed;
+            height: calc(100vh - 70px);
+            top: 70px;
+            padding: 30px 20px;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1002;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            height: 40px;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text-gray);
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            gap: 15px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px 40px;
+            margin-top: 70px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: var(--text-gray);
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3);
+            text-align: center;
+        }
+
+        .balance-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .balance-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-white {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-white:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .pay-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .pay-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pay-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #eff6ff;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: var(--text-dark);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-pay:hover {
+            background: black;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                margin-top: 70px;
+            }
+
+            #mobile-toggle-area {
+                display: none !important;
+            }
+
+            .top-navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 15px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 999;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                margin-bottom: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .nav-logo-area {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .nav-logo {
+                height: 35px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (min-width: 993px) {
+            .top-navbar {
+                padding: 15px 0;
+                background: transparent;
+                backdrop-filter: none;
+                box-shadow: none;
+                position: relative;
+                border: none;
+            }
+
+            .nav-logo-area {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+
+        /* User Profile Navbar Styling */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+
+        /* Profile Dropdown */
+        .user-profile {
+            position: relative;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            width: 220px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .profile-dropdown.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown a {
+            padding: 12px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .profile-dropdown a:hover {
+            background: #f8fafc;
+        }
+
+        .profile-dropdown .logout-btn {
+            color: #ef4444;
+            margin-top: 5px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .profile-dropdown .logout-btn:hover {
+            background: #fee2e2;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-logo-area">
+            <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+            <img src="images/PENSA-LEGON-LOGO.png" alt="Logo" class="nav-logo">
+        </div>
+
+        <!-- Profile -->
+        <div class="user-profile" onclick="toggleProfileMenu()">
+            <div class="avatar-circle" id="user-initial">U</div>
+            <div class="user-info">
+                <span class="user-name" id="user-name-display">User Name</span>
+                <span class="user-role" id="user-role-display">Member</span>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 10px; color: var(--text-gray);"></i>
+
+            <!-- Dropdown Menu -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <a href="portal/profile.html"><i class="fas fa-user-circle"></i> My Profile</a>
+                <a href="portal/financials.html"><i class="fas fa-wallet"></i> Financials</a>
+                <a href="javascript:logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+    <aside class="sidebar" id="sidebar">
+
+        <ul class="nav-links">
+            <li class="nav-item"><a href="portal/dashboard.html" class="nav-link"><i
+                        class="fas fa-th-large"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="portal/profile.html" class="nav-link"><i class="fas fa-user"></i><span>My
+                        Profile</span></a></li>
+            <li class="nav-item"><a href="portal/financials.html" class="nav-link active"><i
+                        class="fas fa-wallet"></i><span>Financials</span></a></li>
+            <li class="nav-item"><a href="portal/events.html" class="nav-link"><i
+                        class="fas fa-calendar-alt"></i><span>Events &
+                        Calendar</span></a></li>
+            <li class="nav-item"><a href="portal/departments.html" class="nav-link"><i
+                        class="fas fa-users"></i><span>Departments</span></a>
+            </li>
+            <li class="nav-item"><a href="portal/gallery.html" class="nav-link"><i class="fas fa-images"></i><span>Photo
+                        Gallery</span></a>
+            </li>
+            <li class="nav-item"><a href="portal/resources.html" class="nav-link"><i
+                        class="fas fa-cloud-download-alt"></i><span>Resources</span></a>
+            </li>
+            <li class="nav-item"><a href="portal/prayer.html" class="nav-link"><i
+                        class="fas fa-praying-hands"></i><span>Prayer Requests</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+
+
+        <div class="page-header">
+            <h1>Giving & Financials</h1>
+            <p>Manage your semester dues, welfare contributions, and tithes.</p>
+        </div>
+
+        <div class="balance-card">
+            <div class="balance-label">Current Owing Balance</div>
+            <div class="balance-amount">GHS 50.00</div>
+            <div class="balance-actions">
+                <button class="btn-white">View Statement</button>
+                <button class="btn-white">Payment History</button>
+            </div>
+        </div>
+
+        <div class="payment-grid">
+            <!-- Semester Dues -->
+            <div class="pay-card">
+                <div class="pay-header">
+                    <div class="pay-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <h3>Semester Dues</h3>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Academic Year</label>
+                        <select class="form-control">
+                            <option>2023/2024</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount (GHS)</label>
+                        <input type="number" class="form-control" value="30.00" readonly>
+                    </div>
+                    <button type="button" class="btn-pay" onclick="mockPay()">Pay Now</button>
+                </form>
+            </div>
+
+            <!-- Welfare -->
+            <div class="pay-card">
+                <div class="pay-header">
+                    <div class="pay-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3>Welfare</h3>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Semester</label>
+                        <select class="form-control">
+                            <option>First Semester</option>
+                            <option>Second Semester</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount (GHS)</label>
+                        <input type="number" class="form-control" value="20.00" readonly>
+                    </div>
+                    <button type="button" class="btn-pay" onclick="mockPay()">Pay Now</button>
+                </form>
+            </div>
+
+            <!-- Tithe / Offertory -->
+            <div class="pay-card">
+                <div class="pay-header">
+                    <div class="pay-icon"><i class="fas fa-envelope-open-text"></i></div>
+                    <h3>Tithe & Offering</h3>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Giving Type</label>
+                        <select class="form-control">
+                            <option>Tithe</option>
+                            <option>Missions Offering</option>
+                            <option>Donation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount (GHS)</label>
+                        <input type="number" class="form-control" placeholder="0.00">
+                    </div>
+                    <button type="button" class="btn-pay" onclick="mockPay()">Give Now</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container"
+        style="position: fixed; bottom: 20px; right: 20px; z-index: 4000; display: flex; flex-direction: column; gap: 10px;">
+    </div>
+
+    <style>
+        .toast {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease forwards;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+
+    <script>
+        function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('active'); }
+        document.addEventListener('click', function (event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            const profile = document.querySelector('.user-profile');
+            const dropdown = document.getElementById('profileDropdown');
+
+            if (sidebar && sidebar.classList.contains('active') && !sidebar.contains(event.target) && toggle && !toggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+
+            // Profile logic
+            if (dropdown && dropdown.classList.contains('active') && !profile.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.classList.toggle('active');
+        }
+
+        /* --- Custom UI Helpers --- */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}" 
+                   style="color: ${type === 'success' ? '#10b981' : '#ef4444'}; font-size: 1.2rem;"></i>
+                <span style="font-weight: 500; font-size: 0.95rem;">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function mockPay() {
+            showToast('This would integrate with Paystack/Mobile Money API.');
+        }
+
+        function logout() {
+            fetch('portal/auth_logout.php').then(() => {
+                window.location.href = 'portal/index.html';
+            });
+        }
+
+        // Auth Check
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('portal/auth_session.php').then(res => res.json()).then(data => {
+                if (!data.logged_in) {
+                    window.location.href = 'portal/index.html';
+                } else {
+                    // Update Navbar Profile
+                    const name = data.user_name || 'Saint';
+                    document.getElementById('user-name-display').textContent = name;
+                    const role = data.user_role === 'admin' ? 'Administrator' : 'Member';
+                    document.getElementById('user-role-display').textContent = role;
+                    document.getElementById('user-initial').textContent = name.charAt(0).toUpperCase();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

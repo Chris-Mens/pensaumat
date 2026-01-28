@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photo Gallery | PENSA UMaT Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-dark: #0a58ca;
+            --secondary-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --sidebar-width: 280px;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: var(--secondary-bg);
+            display: flex;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+            position: fixed;
+            height: calc(100vh - 70px);
+            top: 70px;
+            padding: 30px 20px;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1002;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            height: 40px;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text-gray);
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            gap: 15px;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px 40px;
+            margin-top: 70px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: var(--text-gray);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .album-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            /* Ensure context */
+        }
+
+        .album-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+        }
+
+        .album-preview {
+            height: 220px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2px;
+            background: #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Layout Variations */
+        .album-preview.layout-1 {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        .album-preview.layout-2 {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            /* Better for heads/faces */
+            transition: transform 0.3s ease;
+        }
+
+        /* Standard Collage (layout-3) */
+        .preview-main {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-sub-1 {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-sub-2 {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Modifiers for Layout 1 & 2 */
+        .layout-1 .preview-main {
+            grid-column: 1 / -1;
+            grid-row: 1 / -1;
+        }
+
+        .layout-2 .preview-main {
+            grid-column: 1 / 2;
+            grid-row: 1 / -1;
+        }
+
+        .layout-2 .preview-sub-1 {
+            grid-column: 2 / 3;
+            grid-row: 1 / -1;
+        }
+
+        .album-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .album-date {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .album-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .album-meta {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .album-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-view-album {
+            margin-top: auto;
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #eff6ff;
+            color: var(--primary-color);
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-view-album:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        .album-actions {
+            margin-top: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-action-small {
+            padding: 10px;
+            background: #eff6ff;
+            color: var(--primary-color);
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-action-small:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                margin-top: 70px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-logo-area {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 993px) {
+            .nav-logo-area {
+                display: none;
+            }
+        }
+
+        /* Profile Dropdown */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            width: 220px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .profile-dropdown.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown a {
+            padding: 12px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .profile-dropdown a:hover {
+            background: #f8fafc;
+        }
+
+        .profile-dropdown .logout-btn {
+            color: #ef4444;
+            margin-top: 5px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .profile-dropdown .logout-btn:hover {
+            background: #fee2e2;
+        }
+
+        /* Overlay text on collage */
+        .more-count-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            backdrop-filter: blur(2px);
+        }
+
+
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 4px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+            pointer-events: none;
+        }
+
+        .btn-lb {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .btn-lb:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lb-close:hover {
+            color: white;
+        }
+
+        .lb-counter {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-logo-area">
+            <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+            <img src="images/PENSA-LEGON-LOGO.png" alt="Logo" class="nav-logo">
+            <span style="font-weight: 700; font-size: 1.2rem; margin-left: 5px;">PENSA UMaT</span>
+        </div>
+
+        <!-- Profile -->
+        <div class="user-profile" onclick="toggleProfileMenu()">
+            <div class="avatar-circle" id="user-initial">U</div>
+            <div class="user-info">
+                <span class="user-name" id="user-name-display">User Name</span>
+                <span class="user-role" id="user-role-display">Member</span>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 10px; color: var(--text-gray);"></i>
+
+            <!-- Dropdown Menu -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <a href="portal/profile.html"><i class="fas fa-user-circle"></i> My Profile</a>
+                <a href="portal/financials.html"><i class="fas fa-wallet"></i> Financials</a>
+                <a href="javascript:logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+    <aside class="sidebar" id="sidebar">
+
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="portal/dashboard.html" class="nav-link">
+                    <i class="fas fa-th-large"></i><span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/profile.html" class="nav-link">
+                    <i class="fas fa-user"></i><span>My Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/financials.html" class="nav-link">
+                    <i class="fas fa-wallet"></i><span>Financials</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/events.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i><span>Events & Calendar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/departments.html" class="nav-link">
+                    <i class="fas fa-users"></i><span>Departments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/gallery.html" class="nav-link active">
+                    <i class="fas fa-images"></i><span>Photo Gallery</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/resources.html" class="nav-link">
+                    <i class="fas fa-cloud-download-alt"></i><span>Resources</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/prayer.html" class="nav-link">
+                    <i class="fas fa-praying-hands"></i><span>Prayer Requests</span>
+                </a>
+            </li>
+        </ul>
+
+        <div style="margin-top: auto; padding-top: 50px;">
+            <a href="javascript:logout()" class="nav-link" style="color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Photo Gallery</h1>
+            <p>Relive the moments from our recent services and events.</p>
+        </div>
+
+        <div class="gallery-grid" id="albumsGrid">
+            <div style="text-align: center; color: var(--text-gray); grid-column: 1/-1; padding: 40px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <p style="margin-top: 10px;">Loading gallery albums...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <div class="lb-close" onclick="closeLightbox()">&times;</div>
+        <div class="lightbox-content">
+            <img src="" alt="Gallery Image" class="lightbox-img" id="lb-img">
+        </div>
+        <div class="lightbox-controls">
+            <div class="btn-lb" onclick="changeImage(-1)"><i class="fas fa-chevron-left"></i></div>
+            <div class="btn-lb" onclick="changeImage(1)"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="lb-counter" id="lb-counter">1 / 10</div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"
+        style="position: fixed; bottom: 20px; right: 20px; z-index: 4000; display: flex; flex-direction: column; gap: 10px;">
+    </div>
+
+    <style>
+        .toast {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease forwards;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+
+    <script>
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            const profile = document.querySelector('.user-profile');
+            const dropdown = document.getElementById('profileDropdown');
+
+            if (sidebar && sidebar.classList.contains('active') && !sidebar.contains(event.target) && toggle && !toggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+
+            // Profile logic
+            if (dropdown && dropdown.classList.contains('active') && !profile.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.classList.toggle('active');
+        }
+
+        function logout() {
+            fetch('portal/auth_logout.php').then(() => {
+                window.location.href = 'portal/index.html';
+            });
+        }
+
+        /* --- Custom UI Helpers --- */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}" 
+                   style="color: ${type === 'success' ? '#10b981' : '#ef4444'}; font-size: 1.2rem;"></i>
+                <span style="font-weight: 500; font-size: 0.95rem;">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Auth Check & Load Albums
+        document.addEventListener('DOMContentLoaded', function () {
+            // Auth
+            fetch('portal/auth_session.php').then(res => res.json()).then(data => {
+                if (!data.logged_in) {
+                    window.location.href = 'portal/index.html';
+                } else {
+                    const name = data.user_name || 'Saint';
+                    document.getElementById('user-name-display').textContent = name;
+                    document.getElementById('user-initial').textContent = name.charAt(0).toUpperCase();
+                }
+            });
+
+            // Load Albums
+            loadAlbums();
+        });
+
+        function loadAlbums() {
+            fetch('portal/api_media.php?action=list_albums')
+                .then(res => res.json())
+                .then(data => {
+                    const grid = document.getElementById('albumsGrid');
+
+                    if (data.success && data.data.length > 0) {
+                        grid.innerHTML = data.data.map(album => {
+                            const date = new Date(album.event_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                            // Process images for collage
+                            let previewHTML = '';
+                            let layoutClass = '';
+                            const images = album.preview_images || [];
+
+                            if (images.length === 0) {
+                                layoutClass = 'layout-1';
+                                previewHTML = `
+                                    <div class="preview-main" style="display:flex;align-items:center;justify-content:center;background:#e2e8f0;color:#94a3b8;">
+                                        <i class="fas fa-image" style="font-size:3rem;"></i>
+                                    </div>
+                                `;
+                            } else if (images.length === 1) {
+                                layoutClass = 'layout-1';
+                                previewHTML = `
+                                    <div class="preview-main">
+                                        <img src="${images[0]}" class="preview-img" onclick="openAlbum(${album.id})">
+                                    </div>
+                                `;
+                            } else if (images.length === 2) {
+                                layoutClass = 'layout-2';
+                                previewHTML = `
+                                    <div class="preview-main">
+                                        <img src="${images[0]}" class="preview-img" onclick="openAlbum(${album.id})">
+                                    </div>
+                                    <div class="preview-sub-1">
+                                        <img src="${images[1]}" class="preview-img" onclick="openAlbum(${album.id})">
+                                    </div>
+                                `;
+                            } else {
+                                // 3 or more images
+                                const img1 = images[0];
+                                const img2 = images[1];
+                                const img3 = images[2];
+
+                                previewHTML = `
+                                    <div class="preview-main">
+                                        <img src="${img1}" class="preview-img" onclick="openAlbum(${album.id})">
+                                    </div>
+                                    <div class="preview-sub-1">
+                                        <img src="${img2}" class="preview-img" onclick="openAlbum(${album.id})">
+                                    </div>
+                                    <div class="preview-sub-2">
+                                        <img src="${img3}" class="preview-img" onclick="openAlbum(${album.id})">
+                                        ${album.photo_count > 3 ? `<div class="more-count-overlay" onclick="openAlbum(${album.id})">+${album.photo_count - 3}</div>` : ''}
+                                    </div>
+                                `;
+                            }
+
+                            return `
+                                <div class="album-card">
+                                    <div class="album-preview ${layoutClass}" onclick="openAlbum(${album.id})">
+                                        ${previewHTML}
+                                    </div>
+                                    <div class="album-info">
+                                        <div class="album-date">${date}</div>
+                                        <h3 class="album-title">${album.title}</h3>
+                                        <div class="album-meta">
+                                            <span><i class="fas fa-camera"></i> ${album.photo_count} Photos</span>
+                                            <span><i class="fas fa-map-marker-alt"></i> ${album.location || 'N/A'}</span>
+                                        </div>
+                                        <div class="album-actions">
+                                            <button onclick="openAlbum(${album.id})" class="btn-action-small">
+                                                <i class="fas fa-images"></i> Photos
+                                            </button>
+                                            ${album.external_link ? `
+                                            <a href="${album.external_link}" target="_blank" class="btn-action-small">
+                                                View All <i class="fas fa-external-link-alt"></i>
+                                            </a>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    } else {
+                        grid.innerHTML = `
+                            <div style="grid-column: 1/-1; text-align: center; color: var(--text-gray); padding: 50px;">
+                                <i class="fas fa-images" style="font-size: 3rem; margin-bottom: 20px; color: #cbd5e1;"></i>
+                                <p>No photo albums have been published yet.</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('albumsGrid').innerHTML = '<p style="text-align: center; color: red;">Failed to load albums.</p>';
+                });
+        }
+
+        // Lightbox Logic
+        let currentPhotos = [];
+        let currentIndex = 0;
+
+        function openAlbum(albumId) {
+            // Fetch photos for the album
+            fetch(`portal/api_media.php?action=get_album_photos&album_id=${albumId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        currentPhotos = data.data.map(p => p.image_url);
+                        currentIndex = 0;
+                        showLightBox();
+                    } else {
+                        showToast('No photos in this album yet.', 'error');
+                    }
+                });
+        }
+
+        function showLightBox() {
+            const lightbox = document.getElementById('lightbox');
+            updateLightboxImage();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateLightboxImage() {
+            const img = document.getElementById('lb-img');
+            const counter = document.getElementById('lb-counter');
+            img.src = currentPhotos[currentIndex];
+            counter.textContent = `${currentIndex + 1} / ${currentPhotos.length}`;
+        }
+
+        function changeImage(dir) {
+            currentIndex += dir;
+            if (currentIndex >= currentPhotos.length) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = currentPhotos.length - 1;
+            updateLightboxImage();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function (e) {
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+
+
+
+    </script>
+</body>
+
+</html>

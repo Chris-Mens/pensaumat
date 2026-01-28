@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resources | Admin Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #f59e0b;
+            /* Amber/Orange for Resources */
+            --bg-color: #f1f5f9;
+            --text-dark: #1e293b;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-dark);
+            display: flex;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-color);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header img {
+            height: 30px;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-link {
+            display: flex;
+            padding: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #334155;
+            color: white;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            margin: 20px 0 10px 10px;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            flex: 1;
+            width: 100%;
+            transition: margin 0.3s;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        /* Generic Table Card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px 25px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            /* colored by JS based on type */
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            background: #e2e8f0;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 1rem;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .btn-delete:hover {
+            color: #ef4444;
+        }
+
+        /* Modal - reusable css */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 450px;
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="images/PENSA-LEGON-LOGO.png" alt="Logo">
+            <h2 style="font-size: 1.1rem;">Admin Portal</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item"><a href="portal/admin/index.html" class="nav-link"><i class="fas fa-th-large"></i>
+                    <span>Dashboard</span></a></li>
+            <div class="nav-label">Content</div>
+            <li class="nav-item"><a href="portal/admin/events.html" class="nav-link"><i class="fas fa-calendar-alt"></i>
+                    <span>Events Manager</span></a></li>
+            <li class="nav-item"><a href="portal/admin/resources.html" class="nav-link active"><i
+                        class="fas fa-file-alt"></i> <span>Resources</span></a></li>
+            <li class="nav-item"><a href="portal/admin/prayer.html" class="nav-link"><i
+                        class="fas fa-praying-hands"></i> <span>Prayer Requests</span></a></li>
+        </ul>
+        <div style="margin-top:auto"><a href="portal/dashboard.html" class="nav-link"><i class="fas fa-arrow-left"></i>
+                Back to Portal</a></div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>Resource Library</h1>
+                <p style="color:#64748b">Upload sermons, constitutions, and documents.</p>
+            </div>
+            <button class="btn-primary" onclick="openModal()">
+                <i class="fas fa-cloud-upload-alt"></i> Upload New
+            </button>
+        </div>
+
+        <div class="card">
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Category</th>
+                            <th>Offered By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resources-table">
+                        <!-- Loaded by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <i class="fas fa-times close-modal" onclick="closeModal()"></i>
+            <h2 style="margin-bottom: 20px;">Upload Resource</h2>
+
+            <form id="resourceForm">
+                <input type="hidden" name="action" value="upload_resource">
+
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" name="title" class="form-control" required placeholder="File Display Name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-control">
+                        <option value="Sermon">Sermon</option>
+                        <option value="Document">Official Document</option>
+                        <option value="Constitution">Constitution</option>
+                        <option value="Media">Media/Logo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description (Optional)</label>
+                    <textarea name="description" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">File Select</label>
+                    <input type="file" name="file" class="form-control" required>
+                    <small style="color:#dc2626; display:block; margin-top:5px;">Max size depends on server (usually 2MB
+                        default)</small>
+                </div>
+
+                <button type="submit" class="btn-primary"
+                    style="width:100%; justify-content:center; margin-top:10px;">Upload File</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function loadResources() {
+            fetch('portal/api_media.php?action=list_resources')
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('resources-table');
+                    if (data.success) {
+                        tbody.innerHTML = data.data.map(r => {
+                            let icon = 'fa-file';
+                            let color = '#94a3b8';
+                            if (r.file_type === 'pdf') { icon = 'fa-file-pdf'; color = '#ef4444'; }
+                            else if (['doc', 'docx'].includes(r.file_type)) { icon = 'fa-file-word'; color = '#3b82f6'; }
+                            else if (['mp3', 'wav'].includes(r.file_type)) { icon = 'fa-file-audio'; color = '#a855f7'; }
+
+                            return `
+                                <tr>
+                                    <td>
+                                        <div style="display:flex; align-items:center;">
+                                            <i class="fas ${icon}" style="color:${color}; font-size:1.4rem; margin-right:12px;"></i>
+                                            <div>
+                                                <div style="font-weight:600;">${r.title}</div>
+                                                <div style="font-size:0.8rem; color:#64748b;">${r.description || ''}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge">${r.category}</span></td>
+                                    <td>${r.uploader_name || 'Admin'}</td>
+                                    <td>${new Date(r.created_at).toLocaleDateString()}</td>
+                                    <td>
+                                        <a href="${r.file_url}" target="_blank" class="btn-icon"><i class="fas fa-download"></i></a>
+                                        <button class="btn-icon btn-delete" onclick="deleteResource(${r.id})"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
+                });
+        }
+
+        document.getElementById('resourceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'Uploading...';
+            btn.disabled = true;
+
+            const formData = new FormData(this);
+            fetch('portal/api_media.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    if (data.success) {
+                        closeModal();
+                        loadResources();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    alert('Upload failed');
+                });
+        });
+
+        function deleteResource(id) {
+            if (!confirm('Delete this resource permanently?')) return;
+            const formData = new FormData();
+            formData.append('action', 'delete_resource');
+            formData.append('id', id);
+            fetch('portal/api_media.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(() => loadResources());
+        }
+
+        function openModal() { document.getElementById('uploadModal').classList.add('active'); }
+        function closeModal() { document.getElementById('uploadModal').classList.remove('active'); }
+
+        document.addEventListener('DOMContentLoaded', loadResources);
+    </script>
+</body>
+
+</html>

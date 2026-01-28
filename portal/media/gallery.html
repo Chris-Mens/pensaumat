@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Gallery | Media Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-dark: #0a58ca;
+            --secondary-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --sidebar-width: 280px;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-bg);
+            display: flex;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Sidebar & Layout */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+            position: fixed;
+            height: calc(100vh - 70px);
+            top: 70px;
+            padding: 30px 20px;
+            z-index: 1000;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px 40px;
+            margin-top: 70px;
+        }
+
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1002;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            height: 40px;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text-gray);
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .nav-link i {
+            width: 25px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* --- Gallery Album Styles (Mirrored from Member Portal) --- */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .album-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .album-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+        }
+
+        .album-preview {
+            height: 220px;
+            flex-shrink: 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2px;
+            background: #e2e8f0;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .preview-main {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+            overflow: hidden;
+        }
+
+        .preview-sub-1 {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            overflow: hidden;
+        }
+
+        .preview-sub-2 {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .more-count-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            backdrop-filter: blur(2px);
+            z-index: 2;
+        }
+
+        .album-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            position: relative;
+            z-index: 5;
+        }
+
+        .album-date {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .album-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .album-meta {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .album-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .album-actions {
+            margin-top: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+        }
+
+        .btn-action-small {
+            padding: 10px;
+            background: #eff6ff;
+            color: var(--primary-color);
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-action-small.delete {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .btn-action-small:hover {
+            filter: brightness(0.95);
+        }
+
+        .empty-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: #eee;
+            color: #999;
+            grid-column: 1 / -1;
+            grid-row: 1 / -1;
+        }
+
+        /* --- Modals --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-full {
+            max-width: 90%;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Upload Zone in Modal */
+        .upload-area {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: #eff6ff;
+        }
+
+        /* Photo Grid in Manage Modal */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            overflow-y: auto;
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #f1f5f9;
+            border-radius: 8px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 150px;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .photo-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-gray);
+        }
+
+        /* Responsive */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: none;
+                /* Reset default if any */
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                margin-top: 70px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-logo-area {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-logo-area">
+            <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+            <img src="images/PENSA-LEGON-LOGO.png" alt="Logo" class="nav-logo">
+            <span style="font-weight: 700; font-size: 1.2rem; margin-left: 5px;">PENSA UMaT Media</span>
+        </div>
+        <div style="font-weight: 600; color: var(--text-dark);">
+            <a href="portal/dashboard.html"
+                style="color: var(--text-gray); margin-right: 15px; font-weight: 500; font-size: 0.9rem; text-decoration: none;"><i
+                    class="fas fa-th-large"></i> Member Portal</a>
+            <i class="fas fa-user-circle"></i> Media Admin
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="nav-links" style="list-style: none;">
+            <li class="nav-item">
+                <a href="portal/dashboard.html" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Member View</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/media/index.html" class="nav-link">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Media Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/media/gallery.html" class="nav-link active">
+                    <i class="fas fa-images"></i>
+                    <span>Manage Gallery</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/media/events.html" class="nav-link">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Manage Events</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/media/resources.html" class="nav-link">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Resource Center</span>
+                </a>
+            </li>
+        </ul>
+        <div style="margin-top: auto; padding-top: 50px;">
+            <a href="javascript:logout()" class="nav-link" style="color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Gallery Albums</h1>
+                <p style="color: var(--text-gray);">Create and manage photo albums visible to members.</p>
+            </div>
+            <button class="btn-primary" onclick="openCreateModal()">
+                <i class="fas fa-plus-circle"></i> Create New Album
+            </button>
+        </div>
+
+        <div class="gallery-grid" id="albumsGrid">
+            <!-- Albums will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Create Album Modal -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('createModal')">&times;</span>
+            <h2 style="margin-bottom: 20px;">Create New Album</h2>
+            <form id="createAlbumForm" onsubmit="handleCreateAlbum(event)">
+                <div class="form-group">
+                    <label class="form-label">Album Title</label>
+                    <input type="text" name="title" class="form-control" required placeholder="e.g. Sunday Service">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location (Optional)</label>
+                    <input type="text" name="location" class="form-control" placeholder="e.g. Main Auditorium">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">External Link (Google Photos, etc.)</label>
+                    <input type="url" name="external_link" class="form-control"
+                        placeholder="https://photos.google.com/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description (Optional)</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                    Create Album
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Manage Album Modal (Full Screen-ish) -->
+    <div id="manageModal" class="modal">
+        <div class="modal-content modal-full">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                <h2 id="manageModalTitle">Manage Album</h2>
+                <span class="close-modal" onclick="closeModal('manageModal')">&times;</span>
+            </div>
+
+            <div class="upload-area" id="dropZone">
+                <i class="fas fa-cloud-upload-alt"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                <h3>Drag & Drop Photos Here</h3>
+                <p style="color: var(--text-gray);">or click to select files</p>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;"
+                    onchange="handleFiles(this.files)">
+            </div>
+
+            <div style="margin-bottom: 10px; font-weight: 600;">Photos in Album</div>
+            <div class="photo-grid" id="albumPhotosGrid">
+                <!-- Photos go here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="customConfirmModal" class="modal" style="z-index: 3000;">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <i class="fas fa-exclamation-circle" style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                <h3 id="confirmTitle" style="margin-bottom: 10px;">Are you sure?</h3>
+                <p id="confirmMessage" style="color: var(--text-gray);">Do you really want to perform this action?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: center; gap: 15px;">
+                <button class="btn-cancel" onclick="closeCustomConfirm()">Cancel</button>
+                <button id="confirmBtn" class="btn-primary" style="background: #ef4444;">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"
+        style="position: fixed; bottom: 20px; right: 20px; z-index: 4000; display: flex; flex-direction: column; gap: 10px;">
+    </div>
+
+    <script>
+        const API_URL = 'portal/api_media.php';
+        let currentAlbumId = null;
+
+        document.addEventListener('DOMContentLoaded', loadAlbums);
+
+        /* --- Sidebar & UI --- */
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Close sidebar and profile dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+
+            // Sidebar logic
+            if (sidebar && sidebar.classList.contains('active') &&
+                !sidebar.contains(event.target) &&
+                toggle && !toggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        /* --- Custom UI Helpers --- */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}" 
+                   style="color: ${type === 'success' ? '#10b981' : '#ef4444'}; font-size: 1.2rem;"></i>
+                <span style="font-weight: 500; font-size: 0.95rem;">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        let confirmCallback = null;
+        function showConfirm(message, callback) {
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('customConfirmModal').classList.add('active');
+            confirmCallback = callback;
+        }
+
+        function closeCustomConfirm() {
+            document.getElementById('customConfirmModal').classList.remove('active');
+            confirmCallback = null;
+        }
+
+        document.getElementById('confirmBtn').addEventListener('click', () => {
+            if (confirmCallback) confirmCallback();
+            closeCustomConfirm();
+        });
+
+        /* --- Album Logic --- */
+
+        let allAlbums = [];
+
+        function loadAlbums() {
+            fetch(API_URL + '?action=list_albums')
+                .then(res => res.json())
+                .then(data => {
+                    const grid = document.getElementById('albumsGrid');
+                    grid.innerHTML = '';
+
+                    if (data.success && data.data) {
+                        allAlbums = data.data; // Store globally
+                        data.data.forEach(album => renderAlbumCard(album, grid));
+                    }
+
+                    if (!data.data || data.data.length === 0) {
+                        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999; padding: 50px;">No albums found. Create one!</div>';
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+
+        function renderAlbumCard(album, container) {
+            const date = new Date(album.event_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            // Build preview images logic
+            let previewHTML = '';
+            const images = album.preview_images; // Array of urls
+
+            if (images.length === 0) {
+                previewHTML = `
+                    <div class="empty-placeholder">
+                        <i class="fas fa-images" style="font-size: 2rem; margin-bottom: 5px;"></i>
+                        No Photos
+                    </div>
+                `;
+            } else {
+                const img1 = images[0];
+                const img2 = images[1] || images[0];
+                const img3 = images[2] || images[0];
+
+                previewHTML = `
+                    <div class="preview-main"><img src="${img1}" class="preview-img"></div>
+                    <div class="preview-sub-1"><img src="${img2}" class="preview-img"></div>
+                    <div class="preview-sub-2">
+                        <img src="${img3}" class="preview-img">
+                        ${album.photo_count > 3 ? `<div class="more-count-overlay">+${album.photo_count - 3}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            const div = document.createElement('div');
+            div.className = 'album-card';
+            // Safe safe onclicks using ID lookup
+            div.innerHTML = `
+                <div class="album-preview" onclick="openManageModal(${album.id})">
+                    ${previewHTML}
+                </div>
+                <div class="album-info">
+                    <div class="album-date">${date}</div>
+                    <h3 class="album-title">${album.title}</h3>
+                    <div class="album-meta">
+                        <span><i class="fas fa-camera"></i> ${album.photo_count} Photos</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${album.location || 'N/A'}</span>
+                    </div>
+                    <div class="album-actions">
+                        <button onclick="openEditModal(${album.id})" class="btn-action-small">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button onclick="openManageModal(${album.id})" class="btn-action-small">
+                            <i class="fas fa-images"></i> Photos
+                        </button>
+                        <button onclick="deleteAlbum(${album.id})" class="btn-action-small delete">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        /* --- Actions --- */
+        function openCreateModal() {
+            // Reset form for create mode
+            const form = document.getElementById('createAlbumForm');
+            form.reset();
+            form.removeAttribute('data-mode');
+            form.removeAttribute('data-id');
+            form.querySelector('button[type="submit"]').textContent = 'Create Album';
+            document.querySelector('#createModal h2').textContent = 'Create New Album';
+
+            document.getElementById('createModal').classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Close modal if clicking outside
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal') && event.target.id !== 'customConfirmModal') {
+                event.target.classList.remove('active');
+            }
+        }
+
+        function handleCreateAlbum(e) {
+            e.preventDefault();
+            const form = e.target;
+            const mode = form.getAttribute('data-mode');
+            const formData = new FormData(form);
+
+            if (mode === 'edit') {
+                formData.append('action', 'update_album');
+                formData.append('id', form.getAttribute('data-id'));
+            } else {
+                formData.append('action', 'create_album');
+            }
+
+            fetch(API_URL, { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        closeModal('createModal');
+                        form.reset();
+                        // Reset Mode
+                        form.removeAttribute('data-mode');
+                        form.removeAttribute('data-id');
+                        form.querySelector('button[type="submit"]').textContent = 'Create Album';
+                        document.querySelector('#createModal h2').textContent = 'Create New Album';
+
+                        showToast(mode === 'edit' ? 'Album updated successfully' : 'Album created successfully');
+                        loadAlbums();
+                    } else {
+                        showToast('Error: ' + data.message, 'error');
+                    }
+                });
+        }
+
+        function deleteAlbum(id) {
+            showConfirm("Are you sure? This will delete the album and ALL photos inside it.", () => {
+                const formData = new FormData();
+                formData.append('action', 'delete_album');
+                formData.append('id', id);
+
+                fetch(API_URL, { method: 'POST', body: formData })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('Album deleted successfully');
+                            loadAlbums();
+                        } else {
+                            showToast('Error: ' + data.message, 'error');
+                        }
+                    });
+            });
+        }
+
+        /* --- Manage Modal (Uploads) --- */
+        function openManageModal(id) {
+            currentAlbumId = id;
+            const album = allAlbums.find(a => a.id == id);
+            const title = album ? album.title : 'Album';
+
+            document.getElementById('manageModalTitle').textContent = 'Manage: ' + title;
+            document.getElementById('manageModal').classList.add('active');
+            loadAlbumPhotos(id);
+        }
+
+        function loadAlbumPhotos(id) {
+            fetch(`${API_URL}?action=get_album_photos&album_id=${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    const grid = document.getElementById('albumPhotosGrid');
+                    grid.innerHTML = '';
+                    if (data.success && data.data) {
+                        data.data.forEach(photo => {
+                            const div = document.createElement('div');
+                            div.className = 'photo-item';
+                            div.innerHTML = `
+                                <img src="${photo.image_url}">
+                                <button class="delete-btn" onclick="deletePhoto(${photo.id})"><i class="fas fa-trash"></i></button>
+                            `;
+                            grid.appendChild(div);
+                        });
+                    }
+                });
+        }
+
+        function deletePhoto(id) {
+            showConfirm("Delete this photo?", () => {
+                const formData = new FormData();
+                formData.append('action', 'delete_gallery');
+                formData.append('id', id);
+
+                fetch(API_URL, { method: 'POST', body: formData })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('Photo deleted');
+                            loadAlbumPhotos(currentAlbumId);
+                        }
+                    });
+            });
+        }
+
+        /* --- Edit Album Logic --- */
+        function openEditModal(id) {
+            const album = allAlbums.find(a => a.id == id);
+            if (!album) return;
+
+            // Populate Create Modal with Album Data and switch mode
+            const form = document.getElementById('createAlbumForm');
+            form.setAttribute('data-mode', 'edit');
+            form.setAttribute('data-id', album.id);
+
+            form.querySelector('[name="title"]').value = album.title;
+            form.querySelector('[name="date"]').value = album.event_date.split(' ')[0]; // yyyy-mm-dd
+            form.querySelector('[name="location"]').value = album.location;
+            form.querySelector('[name="external_link"]').value = album.external_link || '';
+            form.querySelector('[name="description"]').value = album.description;
+
+            form.querySelector('button[type="submit"]').textContent = 'Update Album';
+            document.querySelector('#createModal h2').textContent = 'Edit Album';
+            document.getElementById('createModal').classList.add('active');
+        }
+
+        /* --- Drag and Drop Upload --- */
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.onclick = () => fileInput.click();
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (!currentAlbumId) return;
+
+            ([...files]).forEach(file => {
+                const formData = new FormData();
+                formData.append('action', 'upload_gallery');
+                formData.append('file', file);
+                formData.append('album_id', currentAlbumId);
+
+                // Optimistic UI could be added here
+
+                fetch(API_URL, { method: 'POST', body: formData })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Reload photos
+                            loadAlbumPhotos(currentAlbumId);
+                        } else {
+                            console.error('Upload failed', data);
+                        }
+                    });
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard | PENSA UMaT Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-dark: #0a58ca;
+            --secondary-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --sidebar-width: 280px;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: var(--secondary-bg);
+            display: flex;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-color);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+            position: fixed;
+            height: 100vh;
+            padding: 30px 20px;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            top: 70px;
+            /* Below Navbar */
+            height: calc(100vh - 70px);
+            padding-top: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            padding-left: 10px;
+        }
+
+        .logo-area img {
+            height: 45px;
+        }
+
+        .logo-area span {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text-gray);
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            gap: 15px;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px 40px;
+            margin-top: 70px;
+            /* Push down for fixed navbar */
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Header / Top Navbar */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1002;
+            /* Above sidebar */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            height: 40px;
+        }
+
+        .menu-toggle {
+            display: none;
+            /* Hidden on desktop */
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .welcome-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .welcome-section p {
+            color: var(--text-gray);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, transparent 50%, rgba(13, 110, 253, 0.05) 50%);
+            border-radius: 0 16px 0 50%;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-blue {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .icon-green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .icon-purple {
+            background: #f3e8ff;
+            color: #9333ea;
+        }
+
+        .icon-red {
+            background: #ffe4e6;
+            color: #e11d48;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Actions Grid */
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .action-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .action-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .action-card p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn-action i {
+            transition: transform 0.2s;
+        }
+
+        .action-card:hover .btn-action i {
+            transform: translateX(5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                margin-top: 70px;
+            }
+
+            .menu-toggle {
+                display: block;
+                /* Show hamburger on mobile */
+            }
+
+            .nav-logo-area {
+                display: flex;
+                /* Ensure visible on mobile */
+            }
+        }
+
+        /* Desktop specific tweaks */
+        @media (min-width: 993px) {
+
+            /* Reset or specific desktop styles if needed */
+            .menu-toggle {
+                display: none;
+                /* Hide hamburger on desktop */
+            }
+        }
+
+        /* Profile Dropdown */
+        .user-profile {
+            position: relative;
+        }
+
+        /* Ensure it's relative for absolute dropdown */
+
+        .profile-dropdown {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            width: 220px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .profile-dropdown.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown a {
+            padding: 12px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .profile-dropdown a:hover {
+            background: #f8fafc;
+        }
+
+        .profile-dropdown .logout-btn {
+            color: #ef4444;
+            margin-top: 5px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .profile-dropdown .logout-btn:hover {
+            background: #fee2e2;
+        }
+
+        /* Verse of the Day Card */
+        .verse-card {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(30, 41, 59, 0.15);
+            overflow: hidden;
+        }
+
+        .verse-card::before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 8rem;
+            position: absolute;
+            top: -20px;
+            right: 0px;
+            opacity: 0.05;
+            color: #fff;
+        }
+
+        .verse-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .verse-text {
+            font-size: 1.4rem;
+            font-weight: 300;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verse-ref {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ecc94b;
+            /* Gold/Yellow highlight */
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div style="font-weight: 600;">Loading Dashboard...</div>
+    </div>
+
+    <!-- New Sticky Navbar (Global) -->
+    <nav class="top-navbar">
+        <div class="nav-logo-area">
+            <i class="fas fa-bars menu-toggle"
+                style="font-size: 1.5rem; cursor: pointer; color: var(--text-dark); display: block;"
+                onclick="toggleSidebar()"></i>
+            <img src="images/PENSA-LEGON-LOGO.png" alt="Logo" class="nav-logo">
+            <span style="font-weight: 700; font-size: 1.2rem; margin-left: 5px;">PENSA UMaT</span>
+        </div>
+
+        <!-- Profile -->
+        <div class="user-profile" onclick="toggleProfileMenu()">
+            <div class="avatar-circle" id="user-initial">U</div>
+            <div class="user-info">
+                <span class="user-name" id="user-name-display">User Name</span>
+                <span class="user-role" id="user-role-display">Member</span>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 10px; color: var(--text-gray);"></i>
+
+            <!-- Dropdown Menu -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <a href="portal/profile.html"><i class="fas fa-user-circle"></i> My Profile</a>
+                <a href="portal/financials.html"><i class="fas fa-wallet"></i> Financials</a>
+                <a href="javascript:logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="portal/dashboard.html" class="nav-link active">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/profile.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/financials.html" class="nav-link">
+                    <i class="fas fa-wallet"></i>
+                    <span>Financials</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/events.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events & Calendar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/departments.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Departments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/gallery.html" class="nav-link">
+                    <i class="fas fa-images"></i>
+                    <span>Photo Gallery</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/resources.html" class="nav-link">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <span>Resources</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="portal/prayer.html" class="nav-link">
+                    <i class="fas fa-praying-hands"></i>
+                    <span>Prayer Requests</span>
+                </a>
+            </li>
+        </ul>
+
+        <div style="margin-top: auto; padding-top: 50px;">
+            <a href="javascript:logout()" class="nav-link" style="color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="welcome-section" style="margin-bottom: 30px;">
+            <h1 id="welcome-msg">Hello, Saint</h1>
+            <p>Welcome to your member portal</p>
+        </div>
+
+        <!-- Verse of the Day -->
+        <div class="verse-card">
+            <div class="verse-title"><i class="fas fa-bible"></i> Verse of the Day</div>
+            <div class="verse-text" id="vod-text">"For I know the plans I have for you," declares the LORD, "plans
+                to prosper you and not to harm you, plans to give you hope and a future."</div>
+            <div class="verse-ref" id="vod-ref">- Jeremiah 29:11</div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-blue"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="stat-value">Active</div>
+                <div class="stat-label">Membership Status</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-green"><i class="fas fa-hand-holding-heart"></i></div>
+                </div>
+                <div class="stat-value">Paid</div>
+                <div class="stat-label">Sem. Dues Status</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-purple"><i class="fas fa-calendar-check"></i></div>
+                </div>
+                <div class="stat-value">85%</div>
+                <div class="stat-label">Attendance Score</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <!-- Changed wrapper to transparent or match icon colors via inline/class if needed, using icon-blue for harmony -->
+                    <lord-icon src="https://cdn.lordicon.com/lqwwyuxv.json" trigger="loop" delay="2000"
+                        state="morph-open" colors="primary:#2516c7,secondary:#1b1091" style="width:50px;height:50px">
+                    </lord-icon>
+                </div>
+                <div class="stat-value">Daily</div>
+                <div class="stat-label">Bible Reading Streak</div>
+            </div>
+        </div>
+
+        <!-- Quick Access -->
+        <div class="section-title">Quick Actions</div>
+        <div class="actions-grid">
+            <!-- Digital ID -->
+            <div class="action-card">
+                <i class="fas fa-id-badge action-icon"></i>
+                <h3>Digital ID Card</h3>
+                <p>View your official membership ID card and QR code for event check-ins.</p>
+                <a href="#" class="btn-action">View Card <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Pay Dues -->
+            <div class="action-card">
+                <i class="fas fa-credit-card action-icon"></i>
+                <h3>Pay Dues/Tithe</h3>
+                <p>Securely pay your semester dues, welfare contributions, and tithes online.</p>
+                <a href="#" class="btn-action">Make Payment <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Prayer -->
+            <div class="action-card">
+                <i class="fas fa-hands-praying action-icon"></i>
+                <h3>Submit Prayer</h3>
+                <p>Send a confidential prayer request to the Prayer Secretary and team.</p>
+                <a href="#" class="btn-action">Send Request <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Resources -->
+            <div class="action-card">
+                <i class="fas fa-cloud-download-alt action-icon"></i>
+                <h3>Resources</h3>
+                <p>Download sermon notes, constitution, and other spiritual materials.</p>
+                <a href="#" class="btn-action">Browse Library <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Close sidebar and profile dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            const profile = document.querySelector('.user-profile');
+            const dropdown = document.getElementById('profileDropdown');
+
+            // Sidebar logic
+            if (sidebar.classList.contains('active') &&
+                !sidebar.contains(event.target) &&
+                !toggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+
+            // Profile Dropdown logic
+            if (dropdown && dropdown.classList.contains('active') && !profile.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.classList.toggle('active');
+        }
+
+        // Auth Check
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('portal/auth_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    setTimeout(() => { // Artifical delay for smooth loading fade
+                        if (!data.logged_in) {
+                            window.location.href = 'portal/index.html';
+                        } else {
+                            // Update UI
+                            const name = data.user_name || 'Saint';
+                            document.getElementById('welcome-msg').textContent = `Hello, ${name.split(' ')[0]}`;
+                            document.getElementById('user-name-display').textContent = name;
+                            document.getElementById('user-initial').textContent = name.charAt(0).toUpperCase();
+                            if (data.user_role) {
+                                document.getElementById('user-role-display').textContent = data.user_role.toUpperCase();
+                            }
+
+                            // Show Media Portal Link if authorized
+                            const userRole = (data.user_role || 'member').toLowerCase();
+
+                            // Admin Portal Link
+                            if (userRole === 'admin') {
+                                const sidebarList = document.querySelector('.nav-links');
+                                const adminLink = document.createElement('li');
+                                adminLink.className = 'nav-item';
+                                adminLink.innerHTML = `
+                                    <a href="portal/admin/index.html" class="nav-link" style="color: white; background: #0f172a; border: 1px solid #334155;">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Admin Portal</span>
+                                    </a>
+                                `;
+                                sidebarList.insertBefore(adminLink, sidebarList.firstChild);
+
+                                // Dropdown
+                                const dropdown = document.getElementById('profileDropdown');
+                                const adminDdLink = document.createElement('a');
+                                adminDdLink.href = 'portal/admin/index.html';
+                                adminDdLink.innerHTML = '<i class="fas fa-shield-alt"></i> Admin Portal';
+                                dropdown.insertBefore(adminDdLink, dropdown.firstChild);
+                            }
+
+                            if (userRole === 'media' || userRole === 'admin') {
+                                // Add to Sidebar
+                                const sidebarList = document.querySelector('.nav-links');
+                                const mediaLinkItem = document.createElement('li');
+                                mediaLinkItem.className = 'nav-item';
+                                mediaLinkItem.innerHTML = `
+                                    <a href="portal/media/index.html" class="nav-link" style="color: var(--primary-color); background: #eff6ff; border: 1px solid #dbeafe;">
+                                        <i class="fas fa-layer-group"></i>
+                                        <span>Media Portal</span>
+                                    </a>
+                                `;
+                                // Insert after Admin link if it exists, or at top
+                                if (userRole === 'admin') {
+                                    sidebarList.insertBefore(mediaLinkItem, sidebarList.children[1]);
+                                } else {
+                                    sidebarList.insertBefore(mediaLinkItem, sidebarList.firstChild);
+                                }
+
+                                // Add to Profile Dropdown
+                                const dropdown = document.getElementById('profileDropdown');
+                                const mediaDropdownLink = document.createElement('a');
+                                mediaDropdownLink.href = 'portal/media/index.html';
+                                mediaDropdownLink.innerHTML = '<i class="fas fa-layer-group"></i> Media Portal';
+
+                                if (userRole === 'admin') {
+                                    // Insert after first child (Admin Link)
+                                    dropdown.insertBefore(mediaDropdownLink, dropdown.children[1]);
+                                } else {
+                                    dropdown.insertBefore(mediaDropdownLink, dropdown.firstChild);
+                                }
+                            }
+
+                            // Hide loader
+                            document.getElementById('loading-overlay').style.display = 'none';
+                        }
+                    }, 500);
+                })
+                .catch(err => {
+                    console.error(err);
+                    window.location.href = 'portal/index.html';
+                });
+
+        });
+
+        // Random Verse Logic
+        const verses = [
+            { t: "For I know the plans I have for you, declares the LORD, plans to prosper you and not to harm you, plans to give you hope and a future.", r: "Jeremiah 29:11" },
+            { t: "I can do all things through Christ who strengthens me.", r: "Philippians 4:13" },
+            { t: "Trust in the LORD with all your heart and lean not on your own understanding.", r: "Proverbs 3:5" },
+            { t: "The LORD is my shepherd; I shall not want.", r: "Psalm 23:1" },
+            { t: "But seeking him who gives me strength, I can do all things through him.", r: "Philippians 4:13" },
+            { t: "And we know that in all things God works for the good of those who love him.", r: "Romans 8:28" }
+        ];
+
+        // Pick based on day of year to keep it consistent for the day
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const day = Math.floor(diff / oneDay);
+
+        const verse = verses[day % verses.length];
+        document.getElementById('vod-text').textContent = `"${verse.t}"`;
+        document.getElementById('vod-ref').textContent = `- ${verse.r}`;
+
+        function logout() {
+            fetch('portal/auth_logout.php')
+                .then(() => {
+                    window.location.href = 'index.html';
+                });
+        }
+    </script>
+</body>
+
+</html>

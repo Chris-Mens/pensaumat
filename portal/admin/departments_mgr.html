@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Departments | Admin Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #10b981;
+            --bg-color: #f1f5f9;
+            --text-dark: #1e293b;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-dark);
+            display: flex;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-color);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header img {
+            height: 30px;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-link {
+            display: flex;
+            padding: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #334155;
+            color: white;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            margin: 20px 0 10px 10px;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .dept-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .dept-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .dept-content {
+            padding: 20px;
+        }
+
+        .dept-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .dept-leader {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .dept-schedule {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .dept-actions {
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 15px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            padding: 5px;
+            font-size: 1rem;
+        }
+
+        .btn-icon:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-delete:hover {
+            color: #ef4444;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="images/PENSA-LEGON-LOGO.png" alt="Logo">
+            <h2 style="font-size: 1.1rem;">Admin Portal</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item"><a href="portal/admin/index.html" class="nav-link"><i class="fas fa-th-large"></i>
+                    <span>Dashboard</span></a></li>
+            <div class="nav-label">Website</div>
+            <li class="nav-item"><a href="portal/admin/content.html" class="nav-link"><i class="fas fa-edit"></i>
+                    <span>Content Manager</span></a></li>
+            <li class="nav-item"><a href="portal/admin/announcements.html" class="nav-link"><i
+                        class="fas fa-bullhorn"></i> <span>Announcements</span></a></li>
+            <li class="nav-item"><a href="portal/admin/departments_mgr.html" class="nav-link active"><i
+                        class="fas fa-sitemap"></i> <span>Departments</span></a></li>
+            <li class="nav-item"><a href="portal/admin/settings.html" class="nav-link"><i class="fas fa-cog"></i>
+                    <span>Settings</span></a></li>
+            <div class="nav-label">Portal</div>
+            <li class="nav-item"><a href="portal/admin/users.html" class="nav-link"><i class="fas fa-users-cog"></i>
+                    <span>Members</span></a></li>
+            <li class="nav-item"><a href="portal/admin/events.html" class="nav-link"><i class="fas fa-calendar-alt"></i>
+                    <span>Events</span></a></li>
+            <li class="nav-item"><a href="portal/admin/gallery.html" class="nav-link"><i class="fas fa-images"></i>
+                    <span>Gallery</span></a></li>
+            <li class="nav-item"><a href="portal/admin/resources.html" class="nav-link"><i class="fas fa-file-alt"></i>
+                    <span>Resources</span></a></li>
+            <li class="nav-item"><a href="portal/admin/prayer.html" class="nav-link"><i
+                        class="fas fa-praying-hands"></i> <span>Prayer Requests</span></a></li>
+        </ul>
+        <div class="nav-label" style="margin-top: 20px;">View As Member</div>
+        <ul class="nav-links" style="margin-bottom: 0;">
+            <li class="nav-item"><a href="portal/dashboard.html" class="nav-link"
+                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <i class="fas fa-user"></i> <span>Member Portal</span></a></li>
+        </ul>
+        <div class="nav-label">Public Website</div>
+        <ul class="nav-links" style="margin-bottom: 0;">
+            <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fas fa-globe"></i>
+                    <span>Homepage</span></a></li>
+            <li class="nav-item"><a href="about-us-2.html" class="nav-link" target="_blank"><i
+                        class="fas fa-info-circle"></i>
+                    <span>About Us</span></a></li>
+            <li class="nav-item"><a href="contact-us.html" class="nav-link" target="_blank"><i
+                        class="fas fa-envelope"></i>
+                    <span>Contact</span></a></li>
+        </ul>
+        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #334155;">
+            <a href="portal/auth_logout.php" class="nav-link" style="color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>Departments & Ministries</h1>
+                <p style="color:#64748b">Manage church departments and ministry information</p>
+            </div>
+            <button class="btn-primary" onclick="openModal()">
+                <i class="fas fa-plus"></i> Add Department
+            </button>
+        </div>
+
+        <div class="departments-grid" id="departments-list"></div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="deptModal">
+        <div class="modal-content">
+            <i class="fas fa-times close-modal" onclick="closeModal()"></i>
+            <h2 style="margin-bottom: 20px;" id="modal-title">Add Department</h2>
+
+            <form id="deptForm">
+                <input type="hidden" name="action" id="form-action" value="create_department">
+                <input type="hidden" name="id" id="dept-id">
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Department Name</label>
+                <input type="text" name="name" id="name" class="form-control" required placeholder="e.g., Evangelism">
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Leader Name</label>
+                <input type="text" name="leader_name" id="leader_name" class="form-control"
+                    placeholder="e.g., John Doe">
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Leader Contact</label>
+                <input type="text" name="leader_contact" id="leader_contact" class="form-control"
+                    placeholder="Phone or Email">
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Meeting Day</label>
+                <input type="text" name="meeting_day" id="meeting_day" class="form-control"
+                    placeholder="e.g., Every Friday">
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Meeting Time</label>
+                <input type="text" name="meeting_time" id="meeting_time" class="form-control"
+                    placeholder="e.g., 6:00 PM">
+
+                <label style="display:block; margin-bottom:5px; font-weight:500;">Department Image (Optional)</label>
+                <input type="file" name="image" id="image" class="form-control" accept="image/*">
+
+                <button type="submit" class="btn-primary"
+                    style="width:100%; justify-content:center; margin-top:10px;">Save Department</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function loadDepartments() {
+            fetch('portal/api_cms.php?action=list_departments')
+                .then(res => res.json())
+                .then(data => {
+                    const grid = document.getElementById('departments-list');
+                    if (data.success && data.data.length > 0) {
+                        grid.innerHTML = data.data.map(d => `
+                            <div class="dept-card">
+                                <div class="dept-image">
+                                    ${d.image_url ? `<img src="${d.image_url}" style="width:100%; height:100%; object-fit:cover;">` : '<i class="fas fa-users"></i>'}
+                                </div>
+                                <div class="dept-content">
+                                    <div class="dept-name">${d.name}</div>
+                                    ${d.leader_name ? `<div class="dept-leader"><i class="fas fa-user"></i> ${d.leader_name}</div>` : ''}
+                                    ${d.meeting_day ? `<div class="dept-schedule"><i class="far fa-calendar"></i> ${d.meeting_day} ${d.meeting_time ? 'at ' + d.meeting_time : ''}</div>` : ''}
+                                    <div class="dept-actions">
+                                        <button class="btn-icon" onclick='editDepartment(${JSON.stringify(d)})'><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon btn-delete" onclick="deleteDepartment(${d.id})"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        grid.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; grid-column: 1/-1;">No departments yet. Add your first one!</div>';
+                    }
+                });
+        }
+
+        document.getElementById('deptForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('portal/api_cms.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        closeModal();
+                        loadDepartments();
+                    } else {
+                        alert(data.message || 'Error saving department');
+                    }
+                });
+        });
+
+        function editDepartment(dept) {
+            document.getElementById('modal-title').innerText = 'Edit Department';
+            document.getElementById('form-action').value = 'update_department';
+            document.getElementById('dept-id').value = dept.id;
+            document.getElementById('name').value = dept.name;
+            document.getElementById('description').value = dept.description || '';
+            document.getElementById('leader_name').value = dept.leader_name || '';
+            document.getElementById('leader_contact').value = dept.leader_contact || '';
+            document.getElementById('meeting_day').value = dept.meeting_day || '';
+            document.getElementById('meeting_time').value = dept.meeting_time || '';
+            document.getElementById('deptModal').classList.add('active');
+        }
+
+        function deleteDepartment(id) {
+            if (!confirm('Delete this department?')) return;
+            const formData = new FormData();
+            formData.append('action', 'delete_department');
+            formData.append('id', id);
+
+            fetch('portal/api_cms.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(() => loadDepartments());
+        }
+
+        function openModal() {
+            document.getElementById('deptForm').reset();
+            document.getElementById('modal-title').innerText = 'Add Department';
+            document.getElementById('form-action').value = 'create_department';
+            document.getElementById('deptModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('deptModal').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDepartments);
+    </script>
+</body>
+
+</html>

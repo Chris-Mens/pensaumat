@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register | PENSA UMaT Portal</title>
+    <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-dark: #1e3a8a;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('images/banners/home-slider-2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 20px 0;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-header h2 {
+            color: var(--text-dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            background: #fff;
+            border-color: var(--primary-color);
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .form-control:focus+.form-icon {
+            color: var(--primary-color);
+        }
+
+        .form-control:focus~.form-label,
+        .form-control:not(:placeholder-shown)~.form-label {
+            top: 0;
+            left: 20px;
+            font-size: 0.8rem;
+            padding: 0 5px;
+            background: var(--white);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .form-label {
+            position: absolute;
+            left: 45px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        select.form-control {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .links {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+            text-align: center;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="brand-header">
+                <h2>Join The Family</h2>
+                <p>Create your PENSA UMaT Portal Account</p>
+            </div>
+
+            <div id="error-msg" class="error-message"></div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <input type="text" id="full_name" name="full_name" class="form-control" placeholder=" " required>
+                    <i class="fas fa-user form-icon"></i>
+                    <label for="full_name" class="form-label">Full Name</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="student_id" name="student_id" class="form-control" placeholder=" " required>
+                    <i class="fas fa-id-card form-icon"></i>
+                    <label for="student_id" class="form-label">Student ID (Portal ID)</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="email" name="email" class="form-control" placeholder=" " required>
+                    <i class="fas fa-envelope form-icon"></i>
+                    <label for="email" class="form-label">Email Address</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder=" " required>
+                    <i class="fas fa-phone-alt form-icon"></i>
+                    <label for="phone" class="form-label">Phone Number</label>
+                </div>
+
+                <div class="form-group">
+                    <select id="department" name="department" class="form-control" required>
+                        <option value="" disabled selected></option>
+                        <option value="None">No Department Yet</option>
+                        <option value="Bible Studies">Bible Studies</option>
+                        <option value="Organizing">Organizing</option>
+                        <option value="Prayer">Prayer</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Media">Media</option>
+                        <option value="Music and Drama">Music and Drama</option>
+                        <option value="Evangelism">Evangelism</option>
+                    </select>
+                    <i class="fas fa-users form-icon"></i>
+                    <label for="department" class="form-label">Department</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="program" name="program" class="form-control" placeholder=" " required>
+                    <i class="fas fa-graduation-cap form-icon"></i>
+                    <label for="program" class="form-label">Program of Study</label>
+                </div>
+
+                <div class="form-group">
+                    <select id="level" name="level" class="form-control" required>
+                        <option value="" disabled selected></option>
+                        <option value="100">Level 100</option>
+                        <option value="200">Level 200</option>
+                        <option value="300">Level 300</option>
+                        <option value="400">Level 400</option>
+                        <option value="Post-Grad">Post-Grad</option>
+                    </select>
+                    <i class="fas fa-layer-group form-icon"></i>
+                    <label for="level" class="form-label">Year / Level</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="residence" name="residence" class="form-control" placeholder=" ">
+                    <i class="fas fa-home form-icon"></i>
+                    <label for="residence" class="form-label">Residence (Hostel)</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" name="password" class="form-control" placeholder=" " required>
+                    <i class="fas fa-lock form-icon"></i>
+                    <label for="password" class="form-label">Password</label>
+                </div>
+
+                <button type="submit" class="btn-login" id="submitBtn">Register</button>
+            </form>
+
+            <div class="links">
+                Already have an account? <a href="portal/index.html">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"
+        style="position: fixed; bottom: 20px; right: 20px; z-index: 4000; display: flex; flex-direction: column; gap: 10px;">
+    </div>
+
+    <style>
+        .toast {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease forwards;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+
+    <script>
+        // Placeholder fix for Select
+        const deptSelect = document.getElementById('department');
+        deptSelect.addEventListener('change', function () {
+            this.setAttribute('placeholder', 'Selected'); // Mock attr to trigger label style if needed
+            this.classList.remove('placeholder-shown');
+        });
+
+        /* --- Custom UI Helpers --- */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}" 
+                   style="color: ${type === 'success' ? '#10b981' : '#ef4444'}; font-size: 1.2rem;"></i>
+                <span style="font-weight: 500; font-size: 0.95rem;">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const errorDiv = document.getElementById('error-msg');
+
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+            errorDiv.style.display = 'none';
+
+            const formData = new FormData(this);
+
+            fetch('portal/auth_register.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Registration Successful! Redirecting...');
+                        setTimeout(() => window.location.href = 'portal/index.html', 2000);
+                    } else {
+                        throw new Error(data.message || 'Registration failed');
+                    }
+                })
+                .catch(error => {
+                    errorDiv.textContent = error.message;
+                    errorDiv.style.display = 'block';
+                    submitBtn.textContent = 'Register';
+                    submitBtn.disabled = false;
+                    showToast(error.message, 'error');
+                });
+        });
+    </script>
+</body>
+
+</html>
